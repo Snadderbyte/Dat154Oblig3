@@ -1,0 +1,55 @@
+﻿@page
+@model Oblig3.Pages.Courses.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].Coursecode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].Coursename)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].Semester)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course[0].Teacher)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Course) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coursecode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coursename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Semester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Coursecode">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Coursecode">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Coursecode">Delete</a> |
+                <a asp-page="/Grades/index" asp-route-FilterCourseName="@item.Coursecode">Students</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
