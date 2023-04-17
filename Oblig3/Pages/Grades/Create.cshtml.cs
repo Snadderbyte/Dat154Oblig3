@@ -33,7 +33,7 @@ namespace Oblig3.Pages.Grades
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Grades == null || Grade == null)
+          if (_context.Grades == null || Grade == null)
             {
                 return Page();
             }

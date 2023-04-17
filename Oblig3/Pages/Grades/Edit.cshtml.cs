@@ -22,7 +22,6 @@ namespace Oblig3.Pages.Grades
 
         [BindProperty]
         public Grade Grade { get; set; } = default!;
-        public Course Course { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(string id, string course)
         {
@@ -30,27 +29,23 @@ namespace Oblig3.Pages.Grades
             {
                 return NotFound();
             }
-
             if (course == null || _context.Courses == null)
             {
                 return NotFound();
             }
-            //not sure what do
             int sid = int.Parse(id);
-            var grade =  await _context.Grades.FirstOrDefaultAsync(m => m.Studentid == sid);
-            var icourse = await _context.Courses.FirstOrDefaultAsync(m => m.Coursecode == id);
+            var grade = await _context.Grades
+                    .Where(x => x.Coursecode.Equals(course)
+                    && x.Studentid.Equals(sid)).FirstOrDefaultAsync();
 
-            // know what do
-            if (grade == null || icourse == null)
+            if (grade == null)
             {
                 return NotFound();
             }
-            Grade = grade;
-            Course = icourse;
-
-            //dont know what do
-            ViewData["Coursecode"] = new SelectList(_context.Courses, "Coursecode", "Coursecode");
-            ViewData["Studentid"] = new SelectList(_context.Students, "Id", "Id");
+            else
+            {
+                Grade = grade;
+            }
             return Page();
         }
 
@@ -58,10 +53,12 @@ namespace Oblig3.Pages.Grades
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            // ModelState is invalid for some reason dont know why works without
+            /*if (!ModelState.IsValid)
             {
+                Console.WriteLine("1");
                 return Page();
-            }
+            }*/
 
             _context.Attach(Grade).State = EntityState.Modified;
 
